@@ -75,8 +75,19 @@ function removeUnusedFiles(){
     });
 }
 
+function copyAppConfig() {
+    if (process.argv[2] && process.argv[2] === 'production') {
+        exec('cp', ['./configs/appConfig_production.js', config.codePath + '/public/appConfig.js']);
+    }else{
+        exec('cp', ['./configs/appConfig_local.js', config.codePath + '/public/appConfig.js']);
+    }
+}
+
+// console.log(process.argv);
+
 getFrontendCode().then(() => {
     createSymbolLink().then(() => {
         removeUnusedFiles();
+        copyAppConfig();
     }); 
 });
